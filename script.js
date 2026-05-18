@@ -1,252 +1,143 @@
+
 // ============================================
-//   LA BAHÍA MARISQUERÍA - SCRIPT
+// LA BAHÍA MARISQUERÍA - SCRIPT ACTUALIZADO
 // ============================================
 
-// --------- BASE DE PRODUCTOS ---------
 const products = [
-    {
-        id: 1, name: 'Camarón Mediano', category: 'camarones',
-        desc: 'Ideal para cócteles, ceviches y arroces. Carne jugosa y sabor intenso.',
-        price: 180.00, unit: 'kg', emoji: '🦐', badge: 'Popular', featured: true
-    },
-    {
-        id: 2, name: 'Pulpo Baby', category: 'pulpo',
-        desc: 'Tierno y listo para la brasa o al ajillo. Textura incomparable.',
-        price: 250.00, unit: 'kg', emoji: '🐙', badge: 'Especial', featured: true
-    },
-    {
-        id: 3, name: 'Filete de Robalo', category: 'pescado',
-        desc: 'Corte premium sin espinas. Ideal a la plancha o al horno.',
-        price: 220.00, unit: 'kg', emoji: '🐟', badge: 'Premium', featured: true
-    },
-    {
-        id: 4, name: 'Cangrejo Moro', category: 'cangrejo',
-        desc: 'Pinzas grandes con mucha carne blanca. Sabor a mar puro.',
-        price: 350.00, unit: 'kg', emoji: '🦀', badge: 'Deluxe', featured: true
-    },
-    {
-        id: 5, name: 'Camarón Grande', category: 'camarones',
-        desc: 'El rey de los mariscos. Para parrilla y presentaciones especiales.',
-        price: 280.00, unit: 'kg', emoji: '🦐', badge: null, featured: false
-    },
-    {
-        id: 6, name: 'Filete de Trucha', category: 'pescado',
-        desc: 'Fresca del día, perfecta al limón o en sopas.',
-        price: 190.00, unit: 'kg', emoji: '🐠', badge: null, featured: false
-    },
-    {
-        id: 7, name: 'Calamar Entero', category: 'calamar',
-        desc: 'Para rellenar, freír o a la parrilla. Limpio y listo.',
-        price: 200.00, unit: 'kg', emoji: '🦑', badge: 'Nuevo', featured: false
-    },
-    {
-        id: 8, name: 'Ostras Frescas', category: 'mariscos',
-        desc: 'Cosechadas del día, servidas en su concha. Sabor puro de mar.',
-        price: 320.00, unit: 'docena', emoji: '🦪', badge: 'Gourmet', featured: false
-    }
+    {id:1,name:'Camarón Mediano',category:'camarones',desc:'Ideal para cócteles y ceviches.',price:180,unit:'kg',emoji:'🦐',badge:'Popular',featured:true},
+    {id:2,name:'Pulpo Baby',category:'pulpo',desc:'Tierno y listo para la brasa.',price:250,unit:'kg',emoji:'🐙',badge:'Especial',featured:true},
+    {id:3,name:'Filete de Robalo',category:'pescado',desc:'Corte premium sin espinas.',price:220,unit:'kg',emoji:'🐟',badge:'Premium',featured:true},
+    {id:4,name:'Cangrejo Moro',category:'cangrejo',desc:'Pinzas grandes y frescas.',price:350,unit:'kg',emoji:'🦀',badge:'Deluxe',featured:true},
+    {id:5,name:'Camarón Grande',category:'camarones',desc:'Perfecto para parrilla.',price:280,unit:'kg',emoji:'🦐'},
+    {id:6,name:'Filete de Trucha',category:'pescado',desc:'Fresca del día.',price:190,unit:'kg',emoji:'🐠'},
+    {id:7,name:'Calamar Entero',category:'calamar',desc:'Listo para cocinar.',price:200,unit:'kg',emoji:'🦑'},
+    {id:8,name:'Ostras Frescas',category:'mariscos',desc:'Sabor puro del mar.',price:320,unit:'docena',emoji:'🦪',badge:'Gourmet'}
 ];
 
-// --------- COMBOS ---------
-const combos = [
-    {
-        emoji: '🎉',
-        title: 'Combo Mar Completo',
-        desc: 'El paquete perfecto para una cena familiar con todo el sabor del mar.',
-        items: ['1 kg Camarón Mediano', '1 kg Filete de Robalo', '500g Pulpo Baby'],
-        price: 560.00, originalPrice: 650.00, save: '90'
-    },
-    {
-        emoji: '🦐',
-        title: 'Pack Camaronero',
-        desc: 'Para los amantes del camarón. Variedad y cantidad garantizada.',
-        items: ['1 kg Camarón Grande', '1 kg Camarón Mediano'],
-        price: 420.00, originalPrice: 460.00, save: '40'
-    },
-    {
-        emoji: '🌊',
-        title: 'Selección Gourmet',
-        desc: 'Una experiencia premium para ocasiones especiales.',
-        items: ['1 kg Cangrejo Moro', '1 docena Ostras Frescas', '500g Calamar'],
-        price: 750.00, originalPrice: 870.00, save: '120'
-    }
-];
-
-// --------- CARRITO ---------
 let cart = [];
 let currentFilter = 'todos';
-let toastTimer = null;
+let paymentMethod = 'whatsapp';
 
-// --------- NAVEGACIÓN ---------
 document.addEventListener('DOMContentLoaded', () => {
     renderFeatured();
-    renderCombos();
+    renderProducts();
 
-    // Nav buttons
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            const sec = btn.getAttribute('data-section');
-            showSection(sec);
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            // Close mobile nav
+            const sec = btn.dataset.section;
+            if(sec) showSection(sec);
             document.getElementById('mainNav').classList.remove('open');
         });
     });
 
-    // Hamburger
     document.getElementById('hamburger').addEventListener('click', () => {
         document.getElementById('mainNav').classList.toggle('open');
     });
 
-    // Scroll header
-    window.addEventListener('scroll', () => {
-        const header = document.getElementById('mainHeader');
-        header.classList.toggle('scrolled', window.scrollY > 30);
-    });
-
-    // Checkout
     document.getElementById('checkoutBtn').addEventListener('click', sendWhatsApp);
 
-    // Clear cart
     document.getElementById('clearCartBtn').addEventListener('click', () => {
-        if (cart.length === 0) return;
         cart = [];
-        updateCartBadge();
         renderCart();
-        showToast('🗑️', '¡Carrito vaciado!', 'Puedes seguir explorando');
+        updateCartBadge();
     });
+
+    const locationBtn = document.getElementById('locationBtn');
+    if(locationBtn){
+        locationBtn.addEventListener('click', () => {
+            showToast('📍','Ubicación abierta','Google Maps abierto correctamente');
+        });
+    }
 });
 
-function showSection(id) {
+function showSection(id){
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 
-    if (id === 'products') renderProducts();
-    if (id === 'cart')     renderCart();
+    if(id === 'cart') renderCart();
+    if(id === 'products') renderProducts();
 
-    // Sync nav button highlight
-    document.querySelectorAll('.nav-btn').forEach(b => {
-        b.classList.toggle('active', b.getAttribute('data-section') === id);
-    });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// --------- RENDER FEATURED ---------
-function renderFeatured() {
-    const grid = document.getElementById('featuredGrid');
-    if (!grid) return;
+function renderFeatured(){
     const featured = products.filter(p => p.featured);
-    grid.innerHTML = featured.map(p => productCardHTML(p)).join('');
+    document.getElementById('featuredGrid').innerHTML = featured.map(productCardHTML).join('');
 }
 
-// --------- RENDER PRODUCTS ---------
-function renderProducts() {
-    // Filter bar
-    const filterBar = document.getElementById('filterBar');
+function renderProducts(){
     const categories = ['todos', ...new Set(products.map(p => p.category))];
-    filterBar.innerHTML = categories.map(cat =>
-        `<button class="filter-btn ${currentFilter === cat ? 'active' : ''}" onclick="filterProducts('${cat}')">
-            ${cat.charAt(0).toUpperCase() + cat.slice(1)}
-        </button>`
-    ).join('');
 
-    // Products
-    const list = document.getElementById('productsList');
+    document.getElementById('filterBar').innerHTML = categories.map(cat => `
+        <button class="filter-btn ${currentFilter===cat?'active':''}" onclick="filterProducts('${cat}')">
+            ${cat}
+        </button>
+    `).join('');
+
     const filtered = currentFilter === 'todos'
         ? products
         : products.filter(p => p.category === currentFilter);
 
-    list.innerHTML = filtered.map(p => productCardHTML(p)).join('');
+    document.getElementById('productsList').innerHTML = filtered.map(productCardHTML).join('');
 }
 
-function filterProducts(cat) {
+function filterProducts(cat){
     currentFilter = cat;
     renderProducts();
 }
 
-function productCardHTML(p) {
+function productCardHTML(p){
     return `
         <div class="product-card">
             <div class="product-img-wrap">
                 <div class="product-emoji">${p.emoji}</div>
                 ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
             </div>
+
             <div class="product-info">
                 <div class="product-category">${p.category}</div>
                 <div class="product-name">${p.name}</div>
                 <div class="product-desc">${p.desc}</div>
+
                 <div class="product-footer">
                     <div>
                         <div class="product-price">Bs. ${p.price.toFixed(2)}</div>
-                        <small>por ${p.unit}</small>
+                        <small>por kg</small>
                     </div>
-                    <button class="btn-add" onclick="addToCart(${p.id})">+ Añadir</button>
+
+                    <button class="btn-add" onclick="addToCart(${p.id},0.5)">
+                        + 0.5 kg
+                    </button>
                 </div>
             </div>
         </div>
     `;
 }
 
-// --------- RENDER COMBOS ---------
-function renderCombos() {
-    const grid = document.getElementById('combosGrid');
-    if (!grid) return;
-    grid.innerHTML = combos.map(c => `
-        <div class="combo-card">
-            <span class="combo-emoji">${c.emoji}</span>
-            <div class="combo-title">${c.title}</div>
-            <div class="combo-desc">${c.desc}</div>
-            <ul class="combo-items">
-                ${c.items.map(i => `<li>${i}</li>`).join('')}
-            </ul>
-            <div>
-                <span class="combo-price">Bs. ${c.price.toFixed(2)}</span>
-                <span class="combo-save">¡Ahorras Bs. ${c.save}!</span>
-            </div>
-            <br><br>
-            <a href="https://wa.me/59167823905?text=${encodeURIComponent(`Hola La Bahía, me interesa el ${c.title} por Bs. ${c.price.toFixed(2)}`)}" 
-               target="_blank" class="btn-primary" style="text-decoration:none;display:inline-block;padding:12px 24px;border-radius:30px;font-weight:700;font-size:14px;">
-               💬 Consultar combo
-            </a>
-        </div>
-    `).join('');
-}
-
-// --------- CARRITO ---------
-function addToCart(id) {
+function addToCart(id, quantity){
     const product = products.find(p => p.id === id);
     const existing = cart.find(i => i.id === id);
 
-    if (existing) {
-        existing.quantity++;
-        showToast(product.emoji, `¡Uno más de ${product.name}!`, `Ahora tienes ${existing.quantity} en tu carrito`);
+    if(existing){
+        existing.quantity += quantity;
     } else {
-        cart.push({ ...product, quantity: 1 });
-        showToast(product.emoji, `¡${product.name} añadido!`, 'Listo para tu pedido');
+        cart.push({...product, quantity});
     }
 
     updateCartBadge();
-
-    // Animate badge
-    const badge = document.getElementById('cartCount');
-    badge.classList.remove('bump');
-    void badge.offsetWidth; // reflow
-    badge.classList.add('bump');
+    showToast(product.emoji, 'Producto agregado', `${quantity} kg de ${product.name}`);
 }
 
-function updateCartBadge() {
-    const total = cart.reduce((acc, i) => acc + i.quantity, 0);
-    document.getElementById('cartCount').textContent = total;
+function updateCartBadge(){
+    const total = cart.reduce((acc, item) => acc + item.quantity, 0);
+    document.getElementById('cartCount').textContent = total.toFixed(1);
 }
 
-function renderCart() {
+function renderCart(){
     const content = document.getElementById('cartContent');
-    const empty   = document.getElementById('emptyCart');
-    const tbody   = document.getElementById('cartItems');
-    const summary = document.getElementById('summaryRows');
+    const empty = document.getElementById('emptyCart');
 
-    if (cart.length === 0) {
+    if(cart.length === 0){
         content.style.display = 'none';
         empty.style.display = 'block';
         return;
@@ -255,92 +146,148 @@ function renderCart() {
     content.style.display = 'block';
     empty.style.display = 'none';
 
-    let total = 0;
+    const tbody = document.getElementById('cartItems');
+    const mobile = document.getElementById('cartCardsMobile');
+    const summary = document.getElementById('summaryRows');
+
     tbody.innerHTML = '';
+    mobile.innerHTML = '';
     summary.innerHTML = '';
 
+    let total = 0;
+    let totalKg = 0;
+
     cart.forEach((item, idx) => {
-        const sub = item.price * item.quantity;
-        total += sub;
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+        totalKg += item.quantity;
 
         tbody.innerHTML += `
             <tr>
-                <td><strong>${item.emoji} ${item.name}</strong></td>
-                <td>Bs. ${item.price.toFixed(2)}</td>
+                <td>${item.emoji} ${item.name}</td>
+                <td>Bs. ${item.price}</td>
                 <td>
-                    <input type="number" class="cart-qty" value="${item.quantity}" min="1" max="99"
-                        onchange="updateQty(${idx}, this.value)">
+                    <input type="number" step="0.5" min="0.5" class="cart-qty"
+                    value="${item.quantity}" onchange="updateQty(${idx}, this.value)">
                 </td>
-                <td><strong>Bs. ${sub.toFixed(2)}</strong></td>
-                <td>
-                    <button class="btn-remove" onclick="removeItem(${idx})" title="Eliminar">✕</button>
-                </td>
+                <td>Bs. ${subtotal.toFixed(2)}</td>
+                <td><button class="btn-remove" onclick="removeItem(${idx})">✕</button></td>
             </tr>
+        `;
+
+        mobile.innerHTML += `
+            <div class="mobile-cart-card">
+                <strong>${item.emoji} ${item.name}</strong>
+                <p>Bs. ${subtotal.toFixed(2)}</p>
+                <input type="number" step="0.5" min="0.5"
+                value="${item.quantity}" onchange="updateQty(${idx}, this.value)">
+            </div>
         `;
 
         summary.innerHTML += `
             <div class="summary-row">
-                <span>${item.emoji} ${item.name} x${item.quantity}</span>
-                <span>Bs. ${sub.toFixed(2)}</span>
+                <span>${item.name} (${item.quantity}kg)</span>
+                <span>Bs. ${subtotal.toFixed(2)}</span>
             </div>
         `;
     });
 
     document.getElementById('cartTotal').textContent = `Bs. ${total.toFixed(2)}`;
+    document.getElementById('qrTotal').textContent = total.toFixed(2);
+
+    const checkout = document.getElementById('checkoutBtn');
+
+    if(totalKg < 1){
+        checkout.disabled = true;
+        checkout.innerHTML = '⚠️ Debes agregar mínimo 1 kg';
+    } else {
+        checkout.disabled = false;
+        checkout.innerHTML = paymentMethod === 'qr'
+            ? '📷 Confirmar pago por QR'
+            : '💬 Enviar Pedido por WhatsApp';
+    }
 }
 
-function updateQty(idx, val) {
-    const qty = parseInt(val);
-    if (qty < 1 || isNaN(qty)) return;
-    cart[idx].quantity = qty;
+function updateQty(idx, value){
+    const qty = parseFloat(value);
+
+    if(qty < 0.5){
+        cart[idx].quantity = 0.5;
+    } else {
+        cart[idx].quantity = qty;
+    }
+
+    renderCart();
     updateCartBadge();
+}
+
+function removeItem(idx){
+    cart.splice(idx,1);
+    renderCart();
+    updateCartBadge();
+}
+
+function selectPayment(method){
+    paymentMethod = method;
+
+    document.getElementById('payWA').classList.remove('active');
+    document.getElementById('payQR').classList.remove('active');
+
+    if(method === 'whatsapp'){
+        document.getElementById('payWA').classList.add('active');
+        document.getElementById('qrSection').style.display = 'none';
+    } else {
+        document.getElementById('payQR').classList.add('active');
+        document.getElementById('qrSection').style.display = 'block';
+    }
+
     renderCart();
 }
 
-function removeItem(idx) {
-    const name = cart[idx].name;
-    cart.splice(idx, 1);
-    updateCartBadge();
-    renderCart();
-    showToast('🗑️', `${name} eliminado`, 'Tu carrito fue actualizado');
-}
+function sendWhatsApp(){
+    const totalKg = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-// --------- WHATSAPP CHECKOUT ---------
-function sendWhatsApp() {
-    if (cart.length === 0) return;
+    if(totalKg < 1){
+        alert('Debes comprar mínimo 1 kg en total.');
+        return;
+    }
 
-    let msg = '🌊 *Pedido - La Bahía Marisquería* 🌊\n';
-    msg += '──────────────────────\n';
+    let total = 0;
+
+    let msg = '🌊 *Pedido La Bahía Marisquería* 🌊\n\n';
+
     cart.forEach(item => {
-        msg += `• ${item.quantity}x ${item.name}: *Bs. ${(item.price * item.quantity).toFixed(2)}*\n`;
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+
+        msg += `• ${item.name} - ${item.quantity}kg = Bs. ${subtotal.toFixed(2)}\n`;
     });
-    const total = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
-    msg += '──────────────────────\n';
-    msg += `🏷️ *Total: Bs. ${total.toFixed(2)}*\n\n`;
-    msg += 'Por favor confirmame disponibilidad. ¡Gracias! ⚓';
+
+    msg += `\n💰 *Total: Bs. ${total.toFixed(2)}*\n`;
+
+    if(paymentMethod === 'qr'){
+        msg += '\n📷 Ya realicé el pago por QR. Enseguida enviaré una FOTO o CAPTURA del comprobante para confirmar mi pedido.';
+    } else {
+        msg += '\nQuiero confirmar disponibilidad y coordinar mi pedido.';
+    }
 
     window.open(`https://wa.me/59167823905?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// --------- TOAST ---------
-function showToast(emoji, title, message) {
+function showToast(emoji,title,message){
     const toast = document.getElementById('toast');
-    document.getElementById('toastEmoji').textContent  = emoji;
-    document.getElementById('toastTitle').textContent  = title;
-    document.getElementById('toastMsg').textContent    = message;
 
-    // Reset animation
-    toast.classList.remove('show');
-    void toast.offsetWidth;
+    document.getElementById('toastEmoji').textContent = emoji;
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastMsg').textContent = message;
+
     toast.classList.add('show');
 
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
+    setTimeout(() => {
         toast.classList.remove('show');
-    }, 3200);
+    },3000);
 }
 
-function closeToast() {
+function closeToast(){
     document.getElementById('toast').classList.remove('show');
-    if (toastTimer) clearTimeout(toastTimer);
 }
