@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Bahía | Marisquería - Pescado y Mariscos Crudos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,23 +26,29 @@
     <!-- HEADER -->
     <header class="header" id="mainHeader">
         <div class="container header-inner">
-            <div class="logo-wrap">
-                <img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt="La Bahía Logo" class="logo-img">
+            <div class="logo-wrap" onclick="showSection('home')" style="cursor:pointer">
+                <img src="imagen/LABAHIA.png" alt="La Bahía Logo" class="logo-img">
                 <div class="logo-texts">
                     <span class="logo-name">La Bahía</span>
                     <span class="logo-tagline">⚓ Marisquería</span>
                 </div>
             </div>
+
+            <!-- NAV: solo en desktop o dropdown hamburger -->
             <nav class="nav" id="mainNav">
                 <button class="nav-btn active" data-section="home">Inicio</button>
                 <button class="nav-btn" data-section="products">Catálogo</button>
                 <button class="nav-btn" data-section="specials">Especiales</button>
                 <button class="nav-btn" data-section="about">Nosotros</button>
-                <button class="nav-btn cart-nav-btn" data-section="cart">
-                    🛒 Carrito
-                    <span class="cart-badge" id="cartCount">0</span>
-                </button>
             </nav>
+
+            <!-- CARRITO: SIEMPRE VISIBLE (fuera del nav) -->
+            <button class="nav-btn cart-nav-btn" id="cartBtn" data-section="cart">
+                🛒 <span class="cart-label">Carrito</span>
+                <span class="cart-badge" id="cartCount">0</span>
+            </button>
+
+            <!-- HAMBURGER -->
             <button class="hamburger" id="hamburger" aria-label="Menú">
                 <span></span><span></span><span></span>
             </button>
@@ -57,7 +63,7 @@
             <!-- HERO -->
             <div class="hero">
                 <div class="hero-logo-bg">
-                    <img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt="">
+                    <img src="imagen/LABAHIA.png" alt="" class="bg-watermark" aria-hidden="true">
                 </div>
                 <div class="wave-overlay"></div>
                 <div class="container hero-content">
@@ -124,8 +130,8 @@
 
             <!-- BANNER CALIDAD -->
             <div class="quality-banner">
-                <div class="quality-bg-logo">
-                    <img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt="">
+                <div class="quality-bg-logo" aria-hidden="true">
+                    <img src="imagen/LABAHIA.png" alt="" class="bg-watermark">
                 </div>
                 <div class="container quality-content">
                     <h2>"Cada pieza pasa por nuestras<br><em>manos antes de llegar a las tuyas.</em>"</h2>
@@ -166,11 +172,13 @@
         <!-- ==================== CATÁLOGO ==================== -->
         <section id="products" class="section">
             <div class="page-hero mini-hero">
-                <div class="hero-logo-bg"><img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt=""></div>
+                <div class="hero-logo-bg" aria-hidden="true">
+                    <img src="imagen/LABAHIA.png" alt="" class="bg-watermark">
+                </div>
                 <div class="container">
                     <div class="section-label">🐚 Selección del día</div>
                     <h2 class="page-title">Nuestro Catálogo</h2>
-                    <p>Todos frescos y de primera calidad</p>
+                    <p>Todos frescos y de primera calidad · Puedes comprar desde 0.5 kg por producto · Pedido mínimo total: 1 kg</p>
                 </div>
             </div>
             <div class="container section-block">
@@ -182,7 +190,9 @@
         <!-- ==================== ESPECIALES ==================== -->
         <section id="specials" class="section">
             <div class="page-hero mini-hero">
-                <div class="hero-logo-bg"><img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt=""></div>
+                <div class="hero-logo-bg" aria-hidden="true">
+                    <img src="imagen/LABAHIA.png" alt="" class="bg-watermark">
+                </div>
                 <div class="container">
                     <div class="section-label">⭐ Ofertas</div>
                     <h2 class="page-title">Especiales & Combos</h2>
@@ -211,7 +221,9 @@
         <!-- ==================== NOSOTROS ==================== -->
         <section id="about" class="section">
             <div class="page-hero mini-hero">
-                <div class="hero-logo-bg"><img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt=""></div>
+                <div class="hero-logo-bg" aria-hidden="true">
+                    <img src="imagen/LABAHIA.png" alt="" class="bg-watermark">
+                </div>
                 <div class="container">
                     <div class="section-label">⚓ Nuestra historia</div>
                     <h2 class="page-title">Sobre La Bahía</h2>
@@ -231,14 +243,18 @@
                         </div>
                     </div>
                     <div class="about-logo-wrap">
-                        <img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt="La Bahía Logo" class="about-logo">
+                        <img src="imagen/LABAHIA.png" alt="La Bahía Logo" class="about-logo">
                     </div>
                 </div>
+
                 <div class="info-cards">
                     <div class="info-card">
                         <div class="info-icon">📍</div>
                         <h4>Ubicación</h4>
                         <p>Carretera Principal KM 6</p>
+                        <a href="https://maps.app.goo.gl/jPfuFgwxdd3bHQr38" target="_blank" class="btn-maps">
+                            🗺️ Ver en Google Maps
+                        </a>
                     </div>
                     <div class="info-card">
                         <div class="info-icon">📞</div>
@@ -257,27 +273,50 @@
                         <p>Pescado y mariscos<br>crudos de primera</p>
                     </div>
                 </div>
+
+                <!-- MAPA -->
+                <div class="map-section">
+                    <h3>¿Dónde encontrarnos?</h3>
+                    <a href="https://maps.app.goo.gl/jPfuFgwxdd3bHQr38" target="_blank" class="map-btn-large" id="locationBtn">
+                        <span class="map-pin">📍</span>
+                        <div>
+                            <strong>La Bahía Marisquería</strong>
+                            <span>Toca aquí para abrir el mapa en Google Maps</span>
+                        </div>
+                        <span class="map-arrow">→</span>
+                    </a>
+                </div>
+
             </div>
         </section>
 
         <!-- ==================== CARRITO ==================== -->
         <section id="cart" class="section">
             <div class="page-hero mini-hero">
-                <div class="hero-logo-bg"><img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt=""></div>
+                <div class="hero-logo-bg" aria-hidden="true">
+                    <img src="imagen/LABAHIA.png" alt="" class="bg-watermark">
+                </div>
                 <div class="container">
                     <div class="section-label">🛒 Tu selección</div>
                     <h2 class="page-title">Tu Pedido</h2>
                 </div>
             </div>
             <div class="container section-block">
+
                 <div id="cartContent" style="display:none">
                     <div class="cart-layout">
+
+                        <!-- ITEMS -->
                         <div class="cart-items-wrap">
-                            <table class="cart-table">
+                            <div class="cart-min-note">
+                                ℹ️ Pedido mínimo: <strong>1 kg en total</strong>. Puedes combinar 0.5 kg de distintos productos.
+                            </div>
+                            <!-- Tabla para desktop -->
+                            <table class="cart-table desktop-cart">
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
-                                        <th>Precio</th>
+                                        <th>Precio/u</th>
                                         <th>Cantidad</th>
                                         <th>Subtotal</th>
                                         <th></th>
@@ -285,23 +324,56 @@
                                 </thead>
                                 <tbody id="cartItems"></tbody>
                             </table>
+                            <!-- Cards para mobile -->
+                            <div class="cart-cards-mobile" id="cartCardsMobile"></div>
                         </div>
+
+                        <!-- RESUMEN -->
                         <div class="cart-summary-card">
-                            <img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt="" class="summary-logo">
+                            <img src="imagen/LABAHIA.png" alt="La Bahía" class="summary-logo">
                             <h3>Resumen del Pedido</h3>
                             <div class="summary-rows" id="summaryRows"></div>
                             <div class="summary-total">
                                 <span>Total</span>
                                 <span id="cartTotal">Bs. 0.00</span>
                             </div>
+
+                            <!-- MÉTODO DE PAGO -->
+                            <div class="payment-methods">
+                                <p class="payment-label">¿Cómo deseas pagar?</p>
+                                <div class="payment-options">
+                                    <button class="payment-opt active" id="payWA" onclick="selectPayment('whatsapp')">
+                                        💬 WhatsApp
+                                    </button>
+                                    <button class="payment-opt" id="payQR" onclick="selectPayment('qr')">
+                                        📷 Pagar con QR
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- QR (oculto por defecto) -->
+                            <div id="qrSection" class="qr-section" style="display:none">
+                                <p class="qr-label">Escanea el código QR y paga:</p>
+                                <img src="imagen/QRPAGO.JPG" alt="Código QR de Pago" class="qr-img"
+                                     onerror="this.style.display='none'; document.getElementById('qrFallback').style.display='block'">
+                                <div id="qrFallback" style="display:none; padding:20px; background:#f0f4f8; border-radius:12px; text-align:center;">
+                                    <p>📷 Código QR<br><small>Imagen no disponible</small></p>
+                                </div>
+                                <p class="qr-total">Total a pagar: <strong>Bs. <span id="qrTotal">0.00</span></strong></p>
+                                <p class="qr-note">Después de pagar, envía una captura o foto del comprobante por WhatsApp para confirmar tu pedido:<br>
+                                    <a href="https://wa.me/59167823905">+591 67823905</a>
+                                </p>
+                            </div>
+
                             <button class="btn-checkout" id="checkoutBtn">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                                Enviar Pedido por WhatsApp
+                                💬 Enviar Pedido por WhatsApp
                             </button>
                             <button class="btn-clear" id="clearCartBtn">🗑 Vaciar carrito</button>
                         </div>
+
                     </div>
                 </div>
+
                 <div id="emptyCart" class="empty-cart">
                     <div class="empty-icon">🌊</div>
                     <h3>Tu carrito está vacío</h3>
@@ -315,12 +387,9 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-bg-logo">
-            <img src="WhatsApp_Image_2026-05-14_at_16_54_12.png" alt="">
-        </div>
         <div class="container footer-inner">
             <div class="footer-logo">
-                <img src="imagen/WhatsApp Image 2026-05-14 at 16.54.12.png" alt="La Bahía" class="footer-logo-img">
+                <img src="imagen/LABAHIA.png" alt="La Bahía" class="footer-logo-img">
                 <div><strong>La Bahía</strong><span>⚓ Marisquería</span></div>
             </div>
             <div class="footer-links">
@@ -335,7 +404,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 La Bahía Marisquería · Pescado y Mariscos Crudos · Todos los derechos reservados</p>
+            <p>© 2026 La Bahía Marisquería · Pescado y Mariscos Crudos</p>
         </div>
     </footer>
 
